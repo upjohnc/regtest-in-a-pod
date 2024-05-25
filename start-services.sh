@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Start the bitcoin daemon
-bitcoind --chain=regtest --txindex --rpcbind=0.0.0.0 -rpcallowip=0.0.0.0/0 --rpcport=18443 --rest &
+bitcoind --chain=regtest --txindex --blockfilterindex --peerblockfilters --rpcbind=0.0.0.0 --rpcallowip=0.0.0.0/0 --rpcport=18443 --rest &
 sleep 10
 
 # Start the blockchain explorer
