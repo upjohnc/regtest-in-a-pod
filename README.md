@@ -11,13 +11,17 @@ It allows you to create a robust regtest environment which you can turn on and o
 
 Read the article linked above for all the information on how to use the container to its fullest, but here is a quick cheatsheet:
 
-```shell
-# Using the container
-cd ~/podman/regtest-in-a-pod/
-podman machine start regtest
-podman start RegtestBitcoinEnv
-source aliases.sh
+## Usage
+You can use the aliases defined in the `aliases.sh` file directly, but even better is to use the [`just`](https://github.com/casey/just) tool and leverage the commands defined in the `justfile`.
 
+```shell
+just mine 21
+just sendto <address>
+just logs
+```
+
+## Building, Starting, and Stopping the Pod
+```shell
 # Building the container
 cd ~/podman/regtest-in-a-pod/
 podman machine start regtest
@@ -25,4 +29,17 @@ podman --connection regtest build --tag localhost/regtest:v1.0.0 --file ./Contai
 podman create --name RegtestBitcoinEnv --publish 18443:18443 --publish 18444:18444 --publish 3002:3002 --publish 3003:3003 --publish 60401:60401 localhost/regtest:v1.0.0
 podman start RegtestBitcoinEnv
 source aliases.sh
+
+# Using the container
+cd ~/podman/regtest-in-a-pod/
+podman machine start regtest
+podman start RegtestBitcoinEnv
+source aliases.sh
+# podmine
+# podcli
+# explorer
+
+# Stopping the container and the machine
+podman stop RegtestBitcoinEnv
+podman machine stop regtest
 ```
