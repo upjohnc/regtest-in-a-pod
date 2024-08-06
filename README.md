@@ -7,7 +7,7 @@ It allows you to create a robust regtest environment which you can turn on and o
 3. An Electrum server
 4. An Esplora server
 5. A block explorer
-6. Useful aliases for working with the daemon from your command line
+6. Useful aliases and just commands for working with the daemon from your command line
 
 Read the article linked above for all the information on how to use the container to its fullest, but here is a quick cheatsheet:
 
@@ -17,7 +17,8 @@ You can use the aliases defined in the `aliases.sh` file directly, but even bett
 ```shell
 just mine 21
 just sendto <address>
-just logs
+just bitcoindlogs
+just esploralogs
 ```
 
 ## Building, Starting, and Stopping the Pod
@@ -26,7 +27,7 @@ just logs
 cd ~/podman/regtest-in-a-pod/
 podman machine start regtest
 podman --connection regtest build --tag localhost/regtest:v1.0.0 --file ./Containerfile
-podman create --name RegtestBitcoinEnv --publish 18443:18443 --publish 18444:18444 --publish 3002:3002 --publish 3003:3003 --publish 60401:60401 localhost/regtest:v1.0.0
+podman create --name RegtestBitcoinEnv --publish 18443:18443 --publish 18444:18444 --publish 3002:3002 --publish 3003:3003 --publish 60401:60401 localhost/regtest:v1.1.0
 podman start RegtestBitcoinEnv
 source aliases.sh
 

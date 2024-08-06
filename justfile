@@ -13,11 +13,20 @@
 podshell:
   podman exec -it RegtestBitcoinEnv /bin/bash
 
+explorer:
+  open http://127.0.0.1:3003
+
 logs:
   podman logs RegtestBitcoinEnv
 
-explorer:
-  open http://127.0.0.1:3003
+bitcoindlogs:
+  podman exec -it RegtestBitcoinEnv tail -f /root/log/bitcoin.log
+
+esploralogs:
+  podman exec -it RegtestBitcoinEnv tail -f /root/log/esplora.log
+
+explorerlogs:
+  podman exec -it RegtestBitcoinEnv tail -f /root/log/fbbe.log
 
 stop:
   podman stop RegtestBitcoinEnv && podman machine stop regtest
