@@ -28,5 +28,13 @@ esploralogs:
 explorerlogs:
   podman exec -it RegtestBitcoinEnv tail -f /root/log/fbbe.log
 
+start:
+  podman machine start regtest
+  podman start RegtestBitcoinEnv
+
 stop:
-  podman stop RegtestBitcoinEnv && podman machine stop regtest
+  podman stop RegtestBitcoinEnv
+  podman machine stop regtest
+
+servedocs:
+  mkdocs serve
