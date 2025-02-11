@@ -13,6 +13,9 @@
 podshell:
   podman exec -it RegtestBitcoinEnv /bin/bash
 
+@cli COMMAND:
+  COOKIE=$(just cookie) && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE {{COMMAND}}
+
 explorer:
   open http://127.0.0.1:3003
 
@@ -38,3 +41,6 @@ stop:
 
 servedocs:
   mkdocs serve
+
+docs:
+  open https://thunderbiscuit.github.io/regtest-in-a-pod/
