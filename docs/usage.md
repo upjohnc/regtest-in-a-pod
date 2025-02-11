@@ -24,20 +24,11 @@ just mine
 # Mine 10 blocks
 just mine 10
 
-# send 50 coins to specified address
+# Send 50 coins to specified address
 just sendto <address>
-```
 
-To make full use of the node, load up the shell aliases contained in the `aliases.sh` file:
-
-```shell
-source aliases.sh
-```
-
-From there you can use the bitcoin-cli tool directly using the `podcli` alias:
-
-```shell
-podcli getblockchaininfo
+# Send any command to the bitcoin-cli
+just cli <command>
 ```
 
 ## 2. Block Explorer
