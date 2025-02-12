@@ -11,8 +11,12 @@
   COOKIE=$(just cookie) && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE generatetoaddress {{BLOCKS}} bcrt1q6gau5mg4ceupfhtyywyaj5ge45vgptvawgg3aq
 
 [doc("Send mining reward to <ADDRESS>")]
-@sendto ADDRESS:
+@sendminingrewardto ADDRESS:
   COOKIE=$(just cookie) && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE generatetoaddress 1 {{ADDRESS}}
+
+[doc("Send 1 bitcoin to <ADDRESS> using the default wallet.")]
+@sendto ADDRESS:
+  COOKIE=$(just cookie) && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE -rpcwallet=podmanwallet sendtoaddress {{ADDRESS}} 1
 
 [doc("Enter the shell in the pod.")]
 podshell:
@@ -59,3 +63,17 @@ servedocs:
 [doc("Open the website for docs.")]
 docs:
   open https://thunderbiscuit.github.io/regtest-in-a-pod/
+
+[doc("Create a default wallet.")]
+@createwallet:
+  COOKIE=$(just cookie) \
+  && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE createwallet podmanwallet \
+  && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE -rpcwallet=podmanwallet settxfee 0.0001
+
+[doc("Print an address from the default wallet.")]
+@newaddress:
+  COOKIE=$(just cookie) && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE -rpcwallet=podmanwallet getnewaddress
+
+[doc("Print the balance of the default wallet.")]
+@walletbalance:
+  COOKIE=$(just cookie) && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE -rpcwallet=podmanwallet getbalance
