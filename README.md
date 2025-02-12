@@ -27,14 +27,14 @@ just esploralogs
 cd ~/podman/regtest-in-a-pod/
 podman machine start regtest
 podman --connection regtest build --tag localhost/regtest:v1.0.0 --file ./Containerfile
-podman create --name RegtestBitcoinEnv --publish 18443:18443 --publish 18444:18444 --publish 3002:3002 --publish 3003:3003 --publish 60401:60401 localhost/regtest:v1.1.0
+podman --connection regtest create --name RegtestBitcoinEnv --publish 18443:18443 --publish 18444:18444 --publish 3002:3002 --publish 3003:3003 --publish 60401:60401 localhost/regtest:v1.1.0
 ```
 
 ```shell
 # Using the container
 cd ~/podman/regtest-in-a-pod/
 podman machine start regtest
-podman start RegtestBitcoinEnv
+podman --connection regtest start RegtestBitcoinEnv
 # mine 4 blocks
 just mine 4
 # execute bitcoin-cli command directly in pod

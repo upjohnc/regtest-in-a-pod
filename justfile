@@ -6,7 +6,7 @@
 [group("Bitcoin Core")]
 [doc("Print the current session cookie to console.")]
 @cookie:
-  podman exec RegtestBitcoinEnv cat /root/.bitcoin/regtest/.cookie | cut -d ':' -f2
+  podman --connection regtest exec RegtestBitcoinEnv cat /root/.bitcoin/regtest/.cookie | cut -d ':' -f2
 
 [group("Bitcoin Core")]
 [doc("Mine a block, or mine <BLOCKS> number of blocks.")]
@@ -26,39 +26,39 @@
 [group("Logs")]
 [doc("Print all logs to console.")]
 logs:
-  podman logs RegtestBitcoinEnv
+  podman --connection regtest logs RegtestBitcoinEnv
 
 [group("Logs")]
 [doc("Print bitcoin daemon logs to console.")]
 bitcoindlogs:
-  podman exec -it RegtestBitcoinEnv tail -f /root/log/bitcoin.log
+  podman --connection regtest exec -it RegtestBitcoinEnv tail -f /root/log/bitcoin.log
 
 [group("Logs")]
 [doc("Print Esplora logs to console.")]
 esploralogs:
-  podman exec -it RegtestBitcoinEnv tail -f /root/log/esplora.log
+  podman --connection regtest exec -it RegtestBitcoinEnv tail -f /root/log/esplora.log
 
 [group("Logs")]
 [doc("Print block explorer logs to console.")]
 explorerlogs:
-  podman exec -it RegtestBitcoinEnv tail -f /root/log/fbbe.log
+  podman --connection regtest exec -it RegtestBitcoinEnv tail -f /root/log/fbbe.log
 
 [group("Podman")]
 [doc("Start your podman machine and regtest environment.")]
 start:
   podman machine start regtest
-  podman start RegtestBitcoinEnv
+  podman --connection regtest start RegtestBitcoinEnv
 
 [group("Podman")]
 [doc("Stop your podman machine and regtest environment.")]
 stop:
-  podman stop RegtestBitcoinEnv
+  podman --connection regtest stop RegtestBitcoinEnv
   podman machine stop regtest
 
 [group("Podman")]
 [doc("Enter the shell in the pod.")]
 podshell:
-  podman exec -it RegtestBitcoinEnv /bin/bash
+  podman --connection regtest exec -it RegtestBitcoinEnv /bin/bash
 
 [group("Podman")]
 [doc("Open the block explorer.")]
