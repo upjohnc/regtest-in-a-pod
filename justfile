@@ -3,6 +3,37 @@
 @default:
   just --list --unsorted
 
+[group("Podman")]
+[doc("List the available services and their endpoints.")]
+@services:
+  echo "Electrum server:                       tcp://127.0.0.1:60401"
+  echo "Esplora server:                        http://127.0.0.1:3002"
+  echo "Electrum server (Android emulators):   tcp://10.0.2.2:60401"
+  echo "Esplora server  (Android emulators):   http://10.0.2.2:3002"
+  echo "Fast Bitcoin Block Explorer:           http://127.0.0.1:3003"
+
+[group("Podman")]
+[doc("Start your podman machine and regtest environment.")]
+start:
+  podman machine start regtest
+  podman --connection regtest start RegtestBitcoinEnv
+
+[group("Podman")]
+[doc("Stop your podman machine and regtest environment.")]
+stop:
+  podman --connection regtest stop RegtestBitcoinEnv
+  podman machine stop regtest
+
+[group("Podman")]
+[doc("Enter the shell in the pod.")]
+podshell:
+  podman --connection regtest exec -it RegtestBitcoinEnv /bin/bash
+
+[group("Podman")]
+[doc("Open the block explorer.")]
+explorer:
+  open http://127.0.0.1:3003
+
 [group("Bitcoin Core")]
 [doc("Print the current session cookie to console.")]
 @cookie:
@@ -43,28 +74,6 @@ esploralogs:
 explorerlogs:
   podman --connection regtest exec -it RegtestBitcoinEnv tail -f /root/log/fbbe.log
 
-[group("Podman")]
-[doc("Start your podman machine and regtest environment.")]
-start:
-  podman machine start regtest
-  podman --connection regtest start RegtestBitcoinEnv
-
-[group("Podman")]
-[doc("Stop your podman machine and regtest environment.")]
-stop:
-  podman --connection regtest stop RegtestBitcoinEnv
-  podman machine stop regtest
-
-[group("Podman")]
-[doc("Enter the shell in the pod.")]
-podshell:
-  podman --connection regtest exec -it RegtestBitcoinEnv /bin/bash
-
-[group("Podman")]
-[doc("Open the block explorer.")]
-explorer:
-  open http://127.0.0.1:3003
-
 [group("Docs")]
 [doc("Serve the local docs.")]
 servedocs:
@@ -93,6 +102,6 @@ docs:
   COOKIE=$(just cookie) && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE -rpcwallet=podmanwallet getbalance
 
 [group("Default Wallet")]
-[doc("Send 1 bitcoin to <ADDRESS> using the default wallet.")]
+[doc("Send 1 bitcoin to ADDRESS using the default wallet.")]
 @sendto ADDRESS:
   COOKIE=$(just cookie) && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE -rpcwallet=podmanwallet sendtoaddress {{ADDRESS}} 1
