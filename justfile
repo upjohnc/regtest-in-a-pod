@@ -93,6 +93,12 @@ docs:
   && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE -rpcwallet=podmanwallet settxfee 0.0001
 
 [group("Default Wallet")]
+[doc("Load the default wallet.")]
+@loadwallet:
+  COOKIE=$(just cookie) \
+  && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE loadwallet podmanwallet
+
+[group("Default Wallet")]
 [doc("Print an address from the default wallet.")]
 @newaddress:
   COOKIE=$(just cookie) && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE -rpcwallet=podmanwallet getnewaddress
@@ -105,4 +111,4 @@ docs:
 [group("Default Wallet")]
 [doc("Send 1 bitcoin to ADDRESS using the default wallet.")]
 @sendto ADDRESS:
-  COOKIE=$(just cookie) && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE -rpcwallet=podmanwallet sendtoaddress {{ADDRESS}} 1
+  COOKIE=$(just cookie) && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE -rpcwallet=podmanwallet -named sendtoaddress address={{ADDRESS}} amount=1 fee_rate=4
