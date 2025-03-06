@@ -21,6 +21,7 @@ start:
 [group("Podman")]
 [doc("Stop your podman machine and regtest environment.")]
 stop:
+  COOKIE=$(just cookie) && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE stop
   podman --connection regtest stop RegtestBitcoinEnv
   podman machine stop regtest
 
