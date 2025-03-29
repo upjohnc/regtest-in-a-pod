@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y wget
 
 # Setup bitcoin core binaries download
 ARG BITCOIN_VERSION=26.0
-ARG TARGET_ARCH=aarch64
+ARG TARGET_ARCH=aarch64-linux-gnu
 ENV BITCOIN_TARBALL=bitcoin-${BITCOIN_VERSION}-${TARGET_ARCH}.tar.gz
 ENV BITCOIN_URL=https://bitcoincore.org/bin/bitcoin-core-${BITCOIN_VERSION}/${BITCOIN_TARBALL}
 
