@@ -111,4 +111,4 @@ docs:
 [group("Default Wallet")]
 [doc("Send 1 bitcoin to ADDRESS using the default wallet.")]
 @sendto ADDRESS:
-  COOKIE=$(just cookie) && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE -rpcwallet=podmanwallet -named sendtoaddress address={{ADDRESS}} amount=1 fee_rate=4
+  COOKIE=$(just cookie) && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE -rpcwallet=podmanwallet -named sendtoaddress address={{ADDRESS}} amount=0.12345678 fee_rate=4
