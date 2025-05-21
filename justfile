@@ -12,6 +12,25 @@
   echo "Esplora server  (Android emulators):   http://10.0.2.2:3002"
   echo "Fast Bitcoin Block Explorer:           http://127.0.0.1:3003"
 
+  # rainfrog
+[group("Podman")]
+[doc("Build image")]
+build-image:
+  podman build --tag localhost/regtest:v1.0 --file ./Containerfile
+
+[group("Podman")]
+[doc("Create container")]
+create-container:
+  podman create --name RegtestBitcoinEnv --publish 18443:18443 \
+      --publish 18444:18444 --publish 3002:3002 --publish 3003:3003 \
+      --publish 60401:60401 localhost/regtest:v1.0
+
+[group("Podman")]
+[doc("Drop into the container in a bash shell")]
+exec-container:
+  podman exec -it RegtestBitcoinEnv /bin/bash
+
+
 [group("Podman")]
 [doc("Start your podman machine and regtest environment.")]
 start:
@@ -44,6 +63,11 @@ explorer:
 [doc("Mine a block, or mine <BLOCKS> number of blocks.")]
 @mine BLOCKS="1":
   COOKIE=$(just cookie) && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE generatetoaddress {{BLOCKS}} bcrt1q6gau5mg4ceupfhtyywyaj5ge45vgptvawgg3aq
+
+[group("Bitcoin Core")]
+[doc("Check block count")]
+@blockcount:
+  COOKIE=$(just cookie) && bitcoin-cli --chain=regtest -rpcport=18443 --rpcuser=__cookie__ --rpcpassword=$COOKIE getblockcount
 
 [group("Bitcoin Core")]
 [doc("Send mining reward to <ADDRESS>")]
@@ -89,8 +113,8 @@ docs:
 [doc("Create a default wallet.")]
 @createwallet:
   COOKIE=$(just cookie) \
-  && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE createwallet podmanwallet \
-  && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE -rpcwallet=podmanwallet settxfee 0.0001
+  && bitcoin-cli --chain=regtest -rpcport=18443 --rpcuser=__cookie__ --rpcpassword=$COOKIE createwallet podmanwallet \
+  && bitcoin-cli --chain=regtest -rpcport=18443 --rpcuser=__cookie__ --rpcpassword=$COOKIE -rpcwallet=podmanwallet settxfee 0.0001
 
 [group("Default Wallet")]
 [doc("Load the default wallet.")]
