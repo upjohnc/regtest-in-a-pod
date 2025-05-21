@@ -62,7 +62,8 @@ explorer:
 [group("Bitcoin Core")]
 [doc("Mine a block, or mine <BLOCKS> number of blocks.")]
 @mine BLOCKS="1":
-  COOKIE=$(just cookie) && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE generatetoaddress {{BLOCKS}} bcrt1q6gau5mg4ceupfhtyywyaj5ge45vgptvawgg3aq
+  COOKIE=$(just cookie) && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE generatetoaddress {{BLOCKS}} \
+    $(bitcoin-cli -regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE -rpcwallet={{ wallet_name }} getnewaddress)
 
 [group("Bitcoin Core")]
 [doc("Check block count")]
@@ -109,30 +110,32 @@ servedocs:
 docs:
   open https://thunderbiscuit.github.io/regtest-in-a-pod/
 
+wallet_name := "podmanwallet"
+
 [group("Default Wallet")]
 [doc("Create a default wallet.")]
 @createwallet:
   COOKIE=$(just cookie) \
-  && bitcoin-cli --chain=regtest -rpcport=18443 --rpcuser=__cookie__ --rpcpassword=$COOKIE createwallet podmanwallet \
-  && bitcoin-cli --chain=regtest -rpcport=18443 --rpcuser=__cookie__ --rpcpassword=$COOKIE -rpcwallet=podmanwallet settxfee 0.0001
+  && bitcoin-cli --chain=regtest -rpcport=18443 --rpcuser=__cookie__ --rpcpassword=$COOKIE createwallet {{ wallet_name }} \
+  && bitcoin-cli --chain=regtest -rpcport=18443 --rpcuser=__cookie__ --rpcpassword=$COOKIE -rpcwallet={{ wallet_name }} settxfee 0.0001
 
 [group("Default Wallet")]
 [doc("Load the default wallet.")]
 @loadwallet:
   COOKIE=$(just cookie) \
-  && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE loadwallet podmanwallet
+  && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE loadwallet {{ wallet_name }}
 
 [group("Default Wallet")]
 [doc("Print an address from the default wallet.")]
 @newaddress:
-  COOKIE=$(just cookie) && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE -rpcwallet=podmanwallet getnewaddress
+  COOKIE=$(just cookie) && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE -rpcwallet={{ wallet_name }} getnewaddress
 
 [group("Default Wallet")]
 [doc("Print the balance of the default wallet.")]
 @walletbalance:
-  COOKIE=$(just cookie) && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE -rpcwallet=podmanwallet getbalance
+  COOKIE=$(just cookie) && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE -rpcwallet={{ wallet_name }} getbalance
 
 [group("Default Wallet")]
 [doc("Send 1 bitcoin to ADDRESS using the default wallet.")]
 @sendto ADDRESS:
-  COOKIE=$(just cookie) && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE -rpcwallet=podmanwallet -named sendtoaddress address={{ADDRESS}} amount=0.12345678 fee_rate=4
+  COOKIE=$(just cookie) && bitcoin-cli --chain=regtest --rpcuser=__cookie__ --rpcpassword=$COOKIE -rpcwallet={{ wallet_name }} -named sendtoaddress address={{ADDRESS}} amount=0.12345678 fee_rate=4
